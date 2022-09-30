@@ -3,6 +3,10 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import ru.spbstu.kotlin.generate.assume.retry
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -109,11 +113,13 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if ((kingX == rookX1 && ((kingX == rookX2) || (kingY == rookY2))) ||
-        (kingY == rookY1 && ((kingY == rookY2) || (kingX == rookX2)))) return 3
-    else if ((kingX == rookX1) || (kingY == rookY1)) return 1
-    else if ((kingX == rookX2) || (kingY == rookY2)) return 2
-    else return 0
+    return when {
+        ((kingX == rookX1 && ((kingX == rookX2) || (kingY == rookY2))) ||
+                (kingY == rookY1 && ((kingY == rookY2) || (kingX == rookX2)))) -> 3
+        ((kingX == rookX1) || (kingY == rookY1)) -> 1;
+        ((kingX == rookX2) || (kingY == rookY2)) -> 2;
+        else -> 0
+    }
 }
 
 
@@ -131,7 +137,16 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    return when {
+        (kingX == rookX && (abs(kingX - bishopX) == abs(kingY - bishopY))) ||
+                (kingY == rookY && (abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
+        ((kingX == rookX) || (kingY == rookY)) -> 1
+        abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
+        else -> 0
+
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -141,7 +156,15 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    return when {
+        a > b + c || b > a + c || c > b + a -> -1
+        sqr(maxOf(a, b, c)) == sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 1
+        sqr(maxOf(a, b, c)) < sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 0
+        sqr(maxOf(a, b, c)) > sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 2
+        else -> -1
+    }
+}
 
 /**
  * Средняя (3 балла)
@@ -151,4 +174,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
+        (a >= c) && (b <= d) -> b - a
+        (c >= a) && (d <= b) -> d - c
+        (c >= a) && (b >= c) && (d >= b) -> b - c
+        (a >= c) && (d >= a) && (b >= d) -> d - a
+        else -> -1
+    }
+}
