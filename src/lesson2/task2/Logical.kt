@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import lesson1.task1.trackLength
 import kotlin.math.abs
 
 /**
@@ -65,12 +66,7 @@ fun daysInMonth(month: Int, year: Int): Int =
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean {
-    return when {
-        sqr(x2) - sqr(x1) + sqr(y2) - sqr(y1) <= sqr(r2) - sqr(r1) -> true
-        else -> false
-    }
-}
+): Boolean = trackLength(x1, y1, x2, y2) + r1 <= r2
 
 /**
  * Средняя (3 балла)
@@ -83,9 +79,8 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     return when {
-        (a > r && b > r && a > s && b > s) || (a > r && c > r && a > s && c > s) ||
-                (b > r && c > r && b > s && c > s) -> false
-        (a * b <= r * s) || (a * c <= r * s) || (b * c <= r * s) -> true
+        (a <= r && b <= s) || (a <= r && c <= s) || (b <= r && a <= s) ||
+                (b <= r && c <= s) || (c <= r && a <= s) || (c <= r && b <= s) -> true
         else -> false
     }
 }

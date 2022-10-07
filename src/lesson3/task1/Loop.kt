@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -73,14 +74,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var number = n
-    var result = 1
-    for (i in 1..Int.MAX_VALUE) {
-        if (number / 10 > 0) {
-            number /= 10
-            result++
-        }
-        if (number / 10 == 0) break
+    if (n == 0) return 1
+    var number = abs(n)
+    var result = 0
+    while (number != 0) {
+        number /= 10
+        result++
     }
     return result
 }
@@ -123,7 +122,14 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var maxdivider = 2
+    for (i in n - 1 downTo 1) {
+        maxdivider = i
+        if (n % i == 0) break
+    }
+    return maxdivider
+}
 
 /**
  * Простая (2 балла)
@@ -141,7 +147,21 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var number = 0
+    var subsequence = x
+//    for (i in 1..Int.MAX_VALUE) {
+//        if (subsequence == 1) break
+    while (subsequence != 1) {
+        if (subsequence % 2 == 0) {
+            subsequence /= 2
+        } else {
+            subsequence = 3 * subsequence + 1
+        }
+        number++
+    }
+    return number
+}
 
 /**
  * Средняя (3 балла)
