@@ -30,15 +30,12 @@ fun isNumberHappy(number: Int): Boolean =
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return when {
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int) =
+    when {
         abs(x1 - x2) == abs(y1 - y2) -> true
         (x1 == x2) || (y1 == y2) -> true
         else -> false
-
     }
-}
-
 
 /**
  * Простая (2 балла)
@@ -48,7 +45,8 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  */
 fun daysInMonth(month: Int, year: Int): Int =
     when {
-        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 -> 31
+        month == 1 || month == 3 || month == 5 ||
+                month == 7 || month == 8 || month == 10 || month == 12 -> 31
         month == 4 || month == 6 || month == 9 || month == 11 -> 30
         ((year % 100) == 0) && ((year % 400) != 0) && (month == 2) -> 28
         ((year % 4) == 0) && (month == 2) -> 29
@@ -77,10 +75,13 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return when {
-        (a <= r && b <= s) || (a <= r && c <= s) || (b <= r && a <= s) ||
-                (b <= r && c <= s) || (c <= r && a <= s) || (c <= r && b <= s) -> true
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    when {
+        (a <= r && b <= s) -> true
+        (a <= r && c <= s) -> true
+        (b <= r && a <= s) -> true
+        (b <= r && c <= s) -> true
+        (c <= r && a <= s) -> true
+        (c <= r && b <= s) -> true
         else -> false
     }
-}

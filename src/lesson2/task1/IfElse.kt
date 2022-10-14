@@ -72,11 +72,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    if (age % 100 in 11..14) return "$age лет"
-    else if (age % 10 in 2..4) return "$age года"
-    else if (age % 10 == 1) return "$age год"
-    else return "$age лет"
+fun ageDescription(age: Int): String = when {
+    (age % 100 in 11..14) -> "$age лет"
+    (age % 10 in 2..4) -> "$age года"
+    (age % 10 == 1) -> "$age год"
+    else -> "$age лет"
 }
 
 /**
@@ -87,15 +87,15 @@ fun ageDescription(age: Int): String {
  * Определить, за какое время он одолел первую половину пути?
  */
 fun timeForHalfWay(
-    t1: Double, v1: Double,
-    t2: Double, v2: Double,
-    t3: Double, v3: Double
+    t1: Double, v1: Double, t2: Double, v2: Double, t3: Double, v3: Double
 ): Double {
     val alltime = t1 + t2 + t3
     val middleway = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-    if (t1 * v1 > middleway) return middleway / v1
-    else if (t1 * v1 + t2 * v2 > middleway) return (middleway - t1 * v1) / v2 + t1
-    else return (middleway - t1 * v1 - t2 * v2) / v3 + t1 + t2
+    return when {
+        (t1 * v1 > middleway) -> middleway / v1
+        (t1 * v1 + t2 * v2 > middleway) -> (middleway - t1 * v1) / v2 + t1
+        else -> (middleway - t1 * v1 - t2 * v2) / v3 + t1 + t2
+    }
 }
 
 
@@ -109,13 +109,10 @@ fun timeForHalfWay(
  * Считать, что ладьи не могут загораживать друг друга
  */
 fun whichRookThreatens(
-    kingX: Int, kingY: Int,
-    rookX1: Int, rookY1: Int,
-    rookX2: Int, rookY2: Int
+    kingX: Int, kingY: Int, rookX1: Int, rookY1: Int, rookX2: Int, rookY2: Int
 ): Int {
     return when {
-        ((kingX == rookX1 && ((kingX == rookX2) || (kingY == rookY2))) ||
-                (kingY == rookY1 && ((kingY == rookY2) || (kingX == rookX2)))) -> 3
+        (((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2))) -> 3
         ((kingX == rookX1) || (kingY == rookY1)) -> 1;
         ((kingX == rookX2) || (kingY == rookY2)) -> 2;
         else -> 0
@@ -134,13 +131,12 @@ fun whichRookThreatens(
  * Считать, что ладья и слон не могут загораживать друг друга.
  */
 fun rookOrBishopThreatens(
-    kingX: Int, kingY: Int,
-    rookX: Int, rookY: Int,
-    bishopX: Int, bishopY: Int
+    kingX: Int, kingY: Int, rookX: Int, rookY: Int, bishopX: Int, bishopY: Int
 ): Int {
     return when {
-        (kingX == rookX && (abs(kingX - bishopX) == abs(kingY - bishopY))) ||
-                (kingY == rookY && (abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
+        (kingX == rookX && (abs(kingX - bishopX) == abs(kingY - bishopY))) || (kingY == rookY && (abs(kingX - bishopX) == abs(
+            kingY - bishopY
+        ))) -> 3
         ((kingX == rookX) || (kingY == rookY)) -> 1
         abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
         else -> 0

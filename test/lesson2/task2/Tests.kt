@@ -50,6 +50,7 @@ class Tests {
     @Test
     @Tag("2")
     fun circleInside() {
+        assertFalse(circleInside(1.0, -632.0, 1.0, 0.0, 0.0, 0.01))
         assertFalse(circleInside(0.0, 0.0, 6.0, 0.0, 0.0, 5.0))
         assertFalse(circleInside(0.0, 0.0, 1.0, 10.0, 10.0, 9.0))
         assertTrue(circleInside(2.0, 2.0, 2.0, 2.0, 2.0, 2.0))
@@ -60,6 +61,7 @@ class Tests {
     @Test
     @Tag("3")
     fun brickPasses() {
+        assertFalse(brickPasses(7, 5, 5, 7, 4))
         assertFalse(brickPasses(1000, 903, 1, 2, 808))
         assertTrue(brickPasses(2, 10, 5, 6, 3))
         assertTrue(brickPasses(4, 4, 4, 4, 4))

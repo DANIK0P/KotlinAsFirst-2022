@@ -109,9 +109,8 @@ fun fib(n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var mindivider = 2
-    for (i in 2..n) {
-        mindivider = i
-        if (n % i == 0) break
+    while (n % mindivider != 0) {
+        mindivider++
     }
     return mindivider
 }
@@ -123,10 +122,9 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxdivider = 2
-    for (i in n - 1 downTo 1) {
-        maxdivider = i
-        if (n % i == 0) break
+    var maxdivider = n - 1
+    while (n % maxdivider != 0) {
+        maxdivider--
     }
     return maxdivider
 }
@@ -150,8 +148,6 @@ fun maxDivisor(n: Int): Int {
 fun collatzSteps(x: Int): Int {
     var number = 0
     var subsequence = x
-//    for (i in 1..Int.MAX_VALUE) {
-//        if (subsequence == 1) break
     while (subsequence != 1) {
         if (subsequence % 2 == 0) {
             subsequence /= 2
