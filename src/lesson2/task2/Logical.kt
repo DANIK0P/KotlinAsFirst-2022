@@ -33,7 +33,7 @@ fun isNumberHappy(number: Int): Boolean =
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int) =
     when {
         abs(x1 - x2) == abs(y1 - y2) -> true
-        (x1 == x2) || (y1 == y2) -> true
+        x1 == x2 || y1 == y2 -> true
         else -> false
     }
 
@@ -77,11 +77,11 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
     when {
-        (a <= r && b <= s) -> true
-        (a <= r && c <= s) -> true
-        (b <= r && a <= s) -> true
-        (b <= r && c <= s) -> true
-        (c <= r && a <= s) -> true
-        (c <= r && b <= s) -> true
+        a <= r && b <= s -> true
+        a <= r && c <= s -> true
+        b <= r && a <= s -> true
+        b <= r && c <= s -> true
+        c <= r && a <= s -> true
+        c <= r && b <= s -> true
         else -> false
     }

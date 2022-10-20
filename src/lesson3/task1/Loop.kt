@@ -2,7 +2,9 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -108,11 +110,10 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var mindivider = 2
-    while (n % mindivider != 0) {
-        mindivider++
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
+        if (n % i == 0) return i
     }
-    return mindivider
+    return n
 }
 
 
@@ -121,13 +122,8 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var maxdivider = n - 1
-    while (n % maxdivider != 0) {
-        maxdivider--
-    }
-    return maxdivider
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 
 /**
  * Простая (2 балла)
@@ -237,7 +233,31 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var d: Int
+//    var csqr = 1
+    var s: Int
+    var result = 0
+    var g = 1
+    var a = n
+    while (a > 0) {
+        s = sqr(g)
+        d = digitNumber(s)
+//      if (a > d) a - d else {
+//            while (d > 0 && a > 0) {
+//                result = (s / (10.0.pow(d - 1))).toInt()
+//                a = 0
+//            }
+        when {
+            a > d -> a -= d
+            a == d -> result = s % 10
+            a < d -> result = (s / (10.0.pow(d - 1))).toInt()
+        }
+        s++
+        if (a <= d) break
+    }
+    return result
+}
 
 /**
  * Сложная (5 баллов)
