@@ -224,6 +224,7 @@ fun sin(x: Double, eps: Double): Double = TODO()
  */
 fun cos(x: Double, eps: Double): Double = TODO()
 
+
 /**
  * Сложная (4 балла)
  *
@@ -235,7 +236,6 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun squareSequenceDigit(n: Int): Int {
     var d: Int
-//    var csqr = 1
     var s: Int
     var result = 0
     var g = 1
@@ -243,18 +243,19 @@ fun squareSequenceDigit(n: Int): Int {
     while (a > 0) {
         s = sqr(g)
         d = digitNumber(s)
-//      if (a > d) a - d else {
-//            while (d > 0 && a > 0) {
-//                result = (s / (10.0.pow(d - 1))).toInt()
-//                a = 0
-//            }
         when {
             a > d -> a -= d
-            a == d -> result = s % 10
-            a < d -> result = (s / (10.0.pow(d - 1))).toInt()
+            a == d -> {
+                result = s % 10
+                break
+            }
+            a < d -> {
+                result = (s / (10.0.pow(d - a))).toInt()
+                result = (result % (10.0.pow(d - a))).toInt()
+                break
+            }
         }
-        s++
-        if (a <= d) break
+        g++
     }
     return result
 }
