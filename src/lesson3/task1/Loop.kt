@@ -224,7 +224,6 @@ fun sin(x: Double, eps: Double): Double = TODO()
  */
 fun cos(x: Double, eps: Double): Double = TODO()
 
-
 /**
  * Сложная (4 балла)
  *
@@ -236,26 +235,23 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun squareSequenceDigit(n: Int): Int {
     var d: Int
-    var s: Int
+    var sq: Int
     var result = 0
-    var g = 1
+    var number = 1
     var a = n
     while (a > 0) {
-        s = sqr(g)
-        d = digitNumber(s)
+        sq = sqr(number)
+        d = digitNumber(sq)
+        number++
         when {
             a > d -> a -= d
-            a == d -> {
-                result = s % 10
-                break
-            }
-            a < d -> {
-                result = (s / (10.0.pow(d - a))).toInt()
-                result = (result % (10.0.pow(d - a))).toInt()
-                break
+            else -> while (a > 0 && d > 0) {
+                result = (sq / (10.0.pow(d - 1))).toInt()
+                sq %= (10.0.pow(d - 1)).toInt()
+                a--
+                d--
             }
         }
-        g++
     }
     return result
 }
@@ -269,4 +265,25 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var f: Int
+    var d: Int
+    var number = 1
+    var a = n
+    var result = 0
+    while (a > 0) {
+        f = fib(number)
+        number++
+        d = digitNumber(f)
+        when {
+            a > d -> a -= d
+            else -> while (a > 0 && d > 0) {
+                result = (f / (10.0.pow(d - 1))).toInt()
+                f %= (10.0.pow(d - 1)).toInt()
+                a--
+                d--
+            }
+        }
+    }
+    return result
+}

@@ -111,13 +111,12 @@ fun timeForHalfWay(
  */
 fun whichRookThreatens(
     kingX: Int, kingY: Int, rookX1: Int, rookY1: Int, rookX2: Int, rookY2: Int
-): Int =
-    when {
-        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
-        (kingX == rookX1) || (kingY == rookY1) -> 1
-        (kingX == rookX2) || (kingY == rookY2) -> 2
-        else -> 0
-    }
+): Int {
+    var result = 0
+    if (kingX == rookX1 || kingY == rookY1) result++
+    if (kingX == rookX2 || kingY == rookY2) result += 2
+    return result
+}
 
 
 /**
@@ -132,15 +131,12 @@ fun whichRookThreatens(
  */
 fun rookOrBishopThreatens(
     kingX: Int, kingY: Int, rookX: Int, rookY: Int, bishopX: Int, bishopY: Int
-): Int =
-    when {
-        (kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
-        (kingX == rookX) || (kingY == rookY) -> 1
-        abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
-        else -> 0
-
-    }
-
+): Int {
+    var result = 0
+    if (kingX == rookX || kingY == rookY) result++
+    if (abs(kingX - bishopX) == abs(kingY - bishopY)) result += 2
+    return result
+}
 
 /**
  * Простая (2 балла)
@@ -150,15 +146,17 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int =
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    var result = 0
     when {
-        a > b + c || b > a + c || c > b + a -> -1
-        sqr(maxOf(a, b, c)) == sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 1
-        sqr(maxOf(a, b, c)) < sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 0
-        sqr(maxOf(a, b, c)) > sqr(minOf(a, b, c)) + sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c)) -> 2
-        else -> -1
+        (a > b + c || b > a + c || c > b + a) -> result--
+        (sqr(maxOf(a, b, c)) == sqr(minOf(a, b, c)) +
+                sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c))) -> result++
+        (sqr(maxOf(a, b, c)) > sqr(minOf(a, b, c)) +
+                sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c))) -> result += 2
     }
-
+    return result
+}
 
 /**
  * Средняя (3 балла)
