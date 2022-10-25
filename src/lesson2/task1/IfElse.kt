@@ -149,11 +149,11 @@ fun rookOrBishopThreatens(
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var result = 0
     when {
-        (a > b + c || b > a + c || c > b + a) -> result--
-        (sqr(maxOf(a, b, c)) == sqr(minOf(a, b, c)) +
-                sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c))) -> result++
-        (sqr(maxOf(a, b, c)) > sqr(minOf(a, b, c)) +
-                sqr(a + b + c - maxOf(a, b, c) - minOf(a, b, c))) -> result += 2
+        a > b + c || b > a + c || c > b + a -> result--
+        sqr(maxOf(a, b, c)) == sqr(a) + sqr(b) + sqr(c) -
+                sqr(maxOf(a, b, c)) -> result++
+        sqr(maxOf(a, b, c)) > sqr(a) + sqr(b) + sqr(c) -
+                sqr(maxOf(a, b, c)) -> result += 2
     }
     return result
 }
