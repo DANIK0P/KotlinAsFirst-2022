@@ -148,12 +148,12 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var result = 0
+    val sumsqr = sqr(a) + sqr(b) + sqr(c) - sqr(maxOf(a, b, c))
+    val sqrmax = sqr(maxOf(a, b, c))
     when {
         a > b + c || b > a + c || c > b + a -> result--
-        sqr(maxOf(a, b, c)) == sqr(a) + sqr(b) + sqr(c) -
-                sqr(maxOf(a, b, c)) -> result++
-        sqr(maxOf(a, b, c)) > sqr(a) + sqr(b) + sqr(c) -
-                sqr(maxOf(a, b, c)) -> result += 2
+        sqrmax == sumsqr -> result++
+        sqrmax > sumsqr -> result += 2
     }
     return result
 }
