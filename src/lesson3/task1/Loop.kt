@@ -245,11 +245,10 @@ fun squareSequenceDigit(n: Int): Int {
         number++
         when {
             a > d -> a -= d
-            else -> while (a > 0 && d > 0) {
-                result = (sq / (10.0.pow(d - 1))).toInt()
-                sq %= (10.0.pow(d - 1)).toInt()
-                a--
-                d--
+            else -> {
+                sq %= (10.0.pow(d - a + 1)).toInt()
+                result = (sq / (10.0.pow(d - a))).toInt()
+                a = 0
             }
         }
     }
