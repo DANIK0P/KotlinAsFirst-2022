@@ -235,19 +235,19 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun squareSequenceDigit(n: Int): Int {
     var d: Int
-    var sq: Int
+    var sqrn: Int
     var result = 0
     var number = 1
     var a = n
     while (a > 0) {
-        sq = sqr(number)
-        d = digitNumber(sq)
+        sqrn = sqr(number)
+        d = digitNumber(sqrn)
         number++
         when {
             a > d -> a -= d
             else -> {
-                sq %= (10.0.pow(d - a + 1)).toInt()
-                result = (sq / (10.0.pow(d - a))).toInt()
+                sqrn %= (10.0.pow(d - a + 1)).toInt()
+                result = (sqrn / (10.0.pow(d - a))).toInt()
                 a = 0
             }
         }
