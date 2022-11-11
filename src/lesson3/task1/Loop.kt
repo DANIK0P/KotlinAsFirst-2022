@@ -234,21 +234,18 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var d: Int
-    var sqrn: Int
-    var result = 0
+    val result = 0
     var number = 1
     var a = n
     while (a > 0) {
-        sqrn = sqr(number)
-        d = digitNumber(sqrn)
+        var sqrn = sqr(number)
+        val d = digitNumber(sqrn)
         number++
         when {
             a > d -> a -= d
             else -> {
                 sqrn %= (10.0.pow(d - a + 1)).toInt()
-                result = (sqrn / (10.0.pow(d - a))).toInt()
-                a = 0
+                return (sqrn / (10.0.pow(d - a))).toInt()
             }
         }
     }
