@@ -234,7 +234,6 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    val result = 0
     var number = 1
     var a = n
     while (a > 0) {
@@ -249,7 +248,7 @@ fun squareSequenceDigit(n: Int): Int {
             }
         }
     }
-    return result
+    return 0
 }
 
 /**
@@ -262,24 +261,19 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var f: Int
-    var d: Int
     var number = 1
     var a = n
-    var result = 0
     while (a > 0) {
-        f = fib(number)
+        var f = fib(number)
         number++
-        d = digitNumber(f)
+        var d = digitNumber(f)
         when {
             a > d -> a -= d
-            else -> while (a > 0 && d > 0) {
-                result = (f / (10.0.pow(d - 1))).toInt()
-                f %= (10.0.pow(d - 1)).toInt()
-                a--
-                d--
+            else -> {
+                f %= (10.0.pow(d - a + 1)).toInt()
+                return (f / (10.0.pow(d - a))).toInt()
             }
         }
     }
-    return result
+    return 0
 }
