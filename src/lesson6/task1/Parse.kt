@@ -82,8 +82,10 @@ fun dateStrToDigit(str: String): String {
     if (parts.size != 3) return ""
     if (parts[0].toInt() in 1..31)
         for (part in parts) {
-            if (Regex("""[1-9]""").find(part) != null) {
-                if (part.toInt() < 10) result += "0" + part
+            if (Regex("""[0-9]""").find(part) != null) {
+                if (part == parts[2]) result += part
+                else if (part.first() == '0') result += part
+                else if (part.toInt() < 10) result += "0" + part
                 else result += part
             } else {
                 val month = mutableMapOf(
@@ -102,9 +104,11 @@ fun dateStrToDigit(str: String): String {
                 )
                 if (!month.containsKey(part)) return ""
                 for ((name, num) in month) {
-                    if (part == name) result += ".$num."
-                    var days = daysInMonth(num.toInt(), parts[2].toInt())
-                    if (parts[0].toInt() > days) return ""
+                    if (part == name) {
+                        var days = daysInMonth(num.toInt(), parts[2].toInt())
+                        if (parts[0].toInt() > days) return ""
+                        result += ".$num."
+                    }
                 }
             }
         }
