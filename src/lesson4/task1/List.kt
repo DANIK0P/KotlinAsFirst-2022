@@ -199,7 +199,7 @@ fun factorize(n: Int): List<Int> {
     val list = mutableListOf<Int>()
     while (a > 1) {
         val b = minDivisor(a)
-        list.add(b)
+        list.add(minDivisor(b))
         a /= b
     }
     return list

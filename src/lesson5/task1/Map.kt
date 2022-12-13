@@ -119,12 +119,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    for ((k, v) in a) {
+    if (a != null) for ((k, v) in a) {
         return if (b.containsKey(k))
             b.containsValue(v)
         else false
     }
-    return false
+    return true
 }
 
 /**
@@ -141,8 +141,12 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
+    if (b != null)
+        for ((k, v) in b) {
+            a.remove(k, v)
+        }
+    return a
 }
 
 /**
@@ -171,7 +175,14 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val result = (mapB + mapA) as MutableMap<String, String>
+    for ((name, num) in mapB) if (mapA.containsKey(name)) {
+        if (mapA[name] == num) result[name] = num
+        else result[name] += ", " + num
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
@@ -183,7 +194,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    val dopmap = mutableMapOf<String, Pair<Double, Int>>()
+    for ((key, value) in stockPrices)
+        dopmap[key] = Pair((dopmap[key]?.first ?: 0.0) + value, (dopmap[key]?.second ?: 0) + 1)
+    for ((key, value) in dopmap)
+        result[key] = dopmap[key]?.first!! / dopmap[key]?.second!!.toDouble()
+    return result
+}
 
 /**
  * Средняя (4 балла)
