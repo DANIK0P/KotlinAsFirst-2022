@@ -79,7 +79,6 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     var result = ""
-//    if (parts[0].toInt()==0||p)
     if (parts.size != 3) return ""
     if (parts[0].toInt() in 1..31)
         for (part in parts) {
