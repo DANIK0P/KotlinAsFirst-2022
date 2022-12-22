@@ -77,44 +77,27 @@ fun main() {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val parts = str.split(" ")
-    var result = ""
-    if (parts.size != 3) return ""
-    if (parts[0].toInt() in 1..31)
-        for (part in parts) {
-            if (Regex("""[0-9]""").find(part) != null) {
-                if (part == parts[2]) result += part
-                else if (part.first() == '0') result += part
-                else if (part.toInt() < 10) result += "0" + part
-                else result += part
-            } else {
-                val month = mutableMapOf(
-                    "января" to "01",
-                    "февраля" to "02",
-                    "марта" to "03",
-                    "апреля" to "04",
-                    "мая" to "05",
-                    "июня" to "06",
-                    "июля" to "07",
-                    "августа" to "08",
-                    "сентября" to "09",
-                    "октября" to "10",
-                    "ноября" to "11",
-                    "декабря" to "12",
-                )
-                if (!month.containsKey(part)) return ""
-                for ((name, num) in month) {
-                    if (part == name) {
-                        var days = daysInMonth(num.toInt(), parts[2].toInt())
-                        if (parts[0].toInt() > days) return ""
-                        result += ".$num."
-                    }
-                }
-            }
-        }
-    else return ""
-    return result
+    Regex("""(\d+)\s.*\s(\d+)""").matchEntire(str) ?: return ""
+    val parts = str.split(" ").toMutableList()
+    val month = mutableMapOf(
+        "января" to "1",
+        "февраля" to "2",
+        "марта" to "3",
+        "апреля" to "4",
+        "мая" to "5",
+        "июня" to "6",
+        "июля" to "7",
+        "августа" to "8",
+        "сентября" to "9",
+        "октября" to "10",
+        "ноября" to "11",
+        "декабря" to "12",
+    )
+    parts[1] = month[parts[1]] ?: "0"
+    return if (parts[1] == "0" || parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) ""
+    else String.format("%02d.%02d.%d", parts[0].toInt(), parts[1].toInt(), parts[2].toInt())
 }
+
 
 /**
  * Средняя (4 балла)
@@ -126,7 +109,28 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    Regex("""(\d\d).(\d\d).(\d+)""").matchEntire(digital) ?: return ""
+    val parts = digital.split(".").toMutableList()
+    val month = mutableMapOf(
+        "01" to "января",
+        "02" to "февраля",
+        "03" to "марта",
+        "04" to "апреля",
+        "05" to "мая",
+        "06" to "июня",
+        "07" to "июля",
+        "08" to "августа",
+        "09" to "сентября",
+        "10" to "октября",
+        "11" to "ноября",
+        "12" to "декабря",
+    )
+    val day = daysInMonth(parts[1].toInt(), parts[2].toInt())
+    parts[1] = month[parts[1]] ?: "0"
+    return if (parts[1] == "0" || parts[0].toInt() > day) ""
+    else String.format("%d %s %d", parts[0].toInt(), parts[1], parts[2].toInt())
+}
 
 /**
  * Средняя (4 балла)
@@ -178,7 +182,19 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (
+        Regex("""[-+]\d|\d[-+]|[^\d\s-+]|[-+]\s[-+]|\d\s\d|\s\s""").find(expression) != null ||
+        !Regex("""\d.*""").matches(expression)
+    ) throw IllegalArgumentException()
+    val parts = expression.split(" ")
+    var result = parts[0].toInt()
+    for ((i, n) in parts.withIndex()) {
+        if (n == "+") result += parts[i + 1].toInt()
+        if (n == "-") result -= parts[i + 1].toInt()
+    }
+    return result
+}
 
 /**
  * Сложная (6 баллов)
