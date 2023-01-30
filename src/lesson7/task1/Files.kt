@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.lang.StringBuilder
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -102,8 +103,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 
     var num = 0
     for (i in substrings) {
-        var count = counts(line, i.lowercase())
-        result[i] = count
+        result[i] = counts(line, i.lowercase())
     }
     return result
 }
@@ -123,7 +123,17 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val replacement = mapOf('Ы' to "И", 'Я' to "А", 'Ю' to "У", 'ы' to "и", 'я' to "а", 'ю' to "у")
+    val line = File(inputName).readText()
+    val fixedLine = StringBuilder(line)
+    while (true) {
+        val reg = Regex("""[ЖжШшЩщЧч][ЫыЯяЮю]""").find(fixedLine)
+        if (reg != null) {
+            var index = reg!!.range.last
+            fixedLine.replace(index, index + 1, replacement[fixedLine[index]])
+        } else break
+    }
+    File(outputName).bufferedWriter().use { it.write(fixedLine.toString()) }
 }
 
 /**
