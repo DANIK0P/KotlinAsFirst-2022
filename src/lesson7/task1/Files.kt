@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import ru.spbstu.wheels.NullableMonad.filter
 import java.io.File
 import java.lang.StringBuilder
 
@@ -64,8 +65,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    writer.use {
+    File(outputName).bufferedWriter().use {
         File(inputName).forEachLine { i ->
             if (!i.startsWith('_')) {
                 it.write("$i\n")
@@ -154,7 +154,16 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use {
+        var maxLine = 0
+        File(inputName).forEachLine { i ->
+            if (i.trim().length > maxLine) maxLine = i.trim().length
+        }
+        File(inputName).forEachLine { line ->
+            var space = " ".repeat((maxLine - line.trim().length) / 2)
+            it.write("$space${line.trim()}\n")
+        }
+    }
 }
 
 /**
@@ -185,7 +194,32 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use { writer ->
+        var maxLine = 0
+        File(inputName).forEachLine {
+            val delSpace = it.trim().replace(Regex("""\s+"""), " ")
+            if (delSpace.length > maxLine) maxLine = delSpace.length
+        }
+        File(inputName).bufferedReader().forEachLine { line ->
+            val correctLine = line.trim().replace(Regex("""\s+"""), " ")
+            if (correctLine.isEmpty()) writer.write(correctLine)
+            if (correctLine.length != maxLine) {
+                val words = correctLine.split(" ").toMutableList()
+                if (words.size == 1) writer.write("$correctLine\n")
+                else {
+                    val spaces = words.size - 1
+                    var length = correctLine.length
+                    for (i in 0..spaces) {
+                        if ((maxLine - length) % spaces > 0) {
+                            words[i] += " ".repeat((maxLine - length) / spaces + 2)
+                            length++
+                        } else words[i] += " ".repeat((maxLine - length) / spaces + 1)
+                    }
+                    writer.write("${words.joinToString("").trim()}\n")
+                }
+            } else writer.write("$correctLine\n")
+        }
+    }
 }
 
 /**
