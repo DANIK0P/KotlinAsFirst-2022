@@ -2,9 +2,10 @@
 
 package lesson7.task1
 
-import ru.spbstu.wheels.NullableMonad.filter
 import java.io.File
 import java.lang.StringBuilder
+import kotlin.math.max
+import kotlin.math.min
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -221,6 +222,8 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         }
     }
 }
+
+
 
 /**
  * Средняя (14 баллов)
