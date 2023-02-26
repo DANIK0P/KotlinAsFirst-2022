@@ -297,12 +297,11 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             for (char in line) {
                 val dopMap = dictionary.mapKeys { it.key.lowercase()[0] }.mapValues { it.value.lowercase() }
                 if (char.lowercaseChar() in dopMap) {
-                    if (char.isUpperCase())
-                        for (i in 1 until dopMap[char.lowercaseChar()]!!.length) {
-                            writer.write(dopMap[char.lowercaseChar()]!![0].uppercaseChar().toString())
+                    if (char.isUpperCase()) {
+                        writer.write(dopMap[char.lowercaseChar()]!![0].uppercaseChar().toString())
+                        for (i in 1 until dopMap[char.lowercaseChar()]!!.length)
                             writer.write(dopMap[char.lowercaseChar()]!![i].toString())
-                        }
-                    else writer.write(dopMap[char.lowercaseChar()]!!.lowercase())
+                    } else writer.write(dopMap[char.lowercaseChar()]!!.lowercase())
                 } else writer.write(char.toString())
             }
             writer.newLine()
@@ -338,7 +337,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var maxLine = 0
     val dopList = mutableListOf<String>()
-    File(inputName).forEachLine { if (it.length > maxLine) maxLine = it.length }
+    File(inputName).forEachLine { if (it.lowercase().toSet().size > maxLine) maxLine = it.lowercase().toSet().size }
     File(outputName).bufferedWriter().use { writer ->
         File(inputName).bufferedReader().forEachLine { line ->
             if (line.lowercase().toSet().size == line.length)
@@ -543,8 +542,8 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.write(" ".repeat(length))
         writer.write("$lhv")
         writer.newLine()
-        writer.write("* ")
-        writer.write(" ".repeat(lhv.toString().length - 2))
+        writer.write("*")
+        writer.write(" ".repeat(lhv.toString().length - 1))
         writer.write("$rhv")
         writer.newLine()
         writer.write("-".repeat(length + lhv.toString().length))
