@@ -4,8 +4,7 @@ package lesson7.task1
 
 import java.io.File
 import java.lang.StringBuilder
-import kotlin.math.max
-import kotlin.math.min
+import java.util.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -223,8 +222,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     }
 }
 
-
-
 /**
  * Средняя (14 баллов)
  *
@@ -245,7 +242,19 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val resultMap = mutableMapOf<String, Int>()
+    File(inputName).bufferedReader().forEachLine { line ->
+        val spLine = line.split("""[^a-zA-Zа-яА-ЯёЁ]""".toRegex())
+            .filter { it.isNotEmpty() }.map { it.lowercase() }
+        for (str in spLine) {
+            if (str !in resultMap) resultMap[str] = 1
+            else resultMap[str] = resultMap[str]!! + 1
+        }
+    }
+    val top20 = resultMap.values.toList().sortedDescending()
+    return resultMap.filter { it.value >= if (top20.size >= 20) top20[19] else 0 }
+}
 
 /**
  * Средняя (14 баллов)
@@ -283,8 +292,24 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use { writer ->
+        File(inputName).bufferedReader().forEachLine { line ->
+            for (char in line) {
+                val dopMap = dictionary.mapKeys { it.key.lowercase()[0] }.mapValues { it.value.lowercase() }
+                if (char.lowercaseChar() in dopMap) {
+                    if (char.isUpperCase())
+                        for (i in 1 until dopMap[char.lowercaseChar()]!!.length) {
+                            writer.write(dopMap[char.lowercaseChar()]!![0].uppercaseChar().toString())
+                            writer.write(dopMap[char.lowercaseChar()]!![i].toString())
+                        }
+                    else writer.write(dopMap[char.lowercaseChar()]!!.lowercase())
+                } else writer.write(char.toString())
+            }
+            writer.newLine()
+        }
+    }
 }
+
 
 /**
  * Средняя (12 баллов)
@@ -311,8 +336,18 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    var maxLine = 0
+    val dopList = mutableListOf<String>()
+    File(inputName).forEachLine { if (it.length > maxLine) maxLine = it.length }
+    File(outputName).bufferedWriter().use { writer ->
+        File(inputName).bufferedReader().forEachLine { line ->
+            if (line.lowercase().toSet().size == line.length)
+                if (line.length == maxLine) dopList.add(line)
+        }
+        writer.write(dopList.joinToString(", "))
+    }
 }
+
 
 /**
  * Сложная (22 балла)
@@ -502,7 +537,34 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use { writer ->
+        var length = rhv.toString().length
+        var div = 10
+        writer.write(" ".repeat(length))
+        writer.write("$lhv")
+        writer.newLine()
+        writer.write("* ")
+        writer.write(" ".repeat(lhv.toString().length - 2))
+        writer.write("$rhv")
+        writer.newLine()
+        writer.write("-".repeat(length + lhv.toString().length))
+        writer.newLine()
+        while (0 < length) {
+            val result = lhv * ((rhv % div) / (div / 10))
+            if (length == rhv.toString().length) {
+                writer.write("${" ".repeat(rhv.toString().length)}$result")
+                writer.newLine()
+            } else {
+                writer.write("+${" ".repeat(length - 1)}$result")
+                writer.newLine()
+            }
+            div *= 10
+            length--
+        }
+        writer.write("-".repeat(rhv.toString().length + lhv.toString().length))
+        writer.newLine()
+        writer.write(" ${lhv * rhv}")
+    }
 }
 
 
